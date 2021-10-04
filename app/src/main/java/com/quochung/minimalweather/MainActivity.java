@@ -9,7 +9,6 @@ import android.graphics.Shader;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.TextPaint;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,93 +44,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        requestQueue = VolleyS.getmInstance(this).getRequestQueue();
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        city = findViewById(R.id.city);
-        date = findViewById(R.id.date);
-        temp = findViewById(R.id.temp);
-        state = findViewById(R.id.state);
-        weather = findViewById(R.id.weather);
-        weatherblur = findViewById(R.id.weatherblur);
 
-        //Set date
-        Date currentdate = new Date();
-        String stringDate = DateFormat.getDateInstance() .format(currentdate);
-        date.setText(stringDate);
-        weatherdata = getSharedPreferences("weatherdata", MODE_PRIVATE);
+            requestQueue = VolleyS.getmInstance(this).getRequestQueue();
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+            city = findViewById(R.id.city);
+            date = findViewById(R.id.date);
+            temp = findViewById(R.id.temp);
+            state = findViewById(R.id.state);
+            weather = findViewById(R.id.weather);
+            weatherblur = findViewById(R.id.weatherblur);
+            //Set date
+            Date currentdate = new Date();
+            String stringDate = DateFormat.getDateInstance() .format(currentdate);
+            date.setText(stringDate);
+            weatherdata = getSharedPreferences("weatherdata", MODE_PRIVATE);
 
-        state.setText(weatherdata.getString("statedata", "Clear"));
-        String coloruse  = weatherdata.getString("coloruse", "#8EC1DD");
+            state.setText(weatherdata.getString("statedata", "Clear"));
 
+            String coloruse = weatherdata.getString("coloruse", "#ffffff");
+            //-------------------
+            ////Set cache temp
+            String temptext = weatherdata.getString("tempdata", "26") + "°";
+            temp.setText(temptext);
+            TextPaint paint = temp.getPaint();
+            float width = paint.measureText(temptext);
 
-        //-------------------
-        ////Set cache temp
-        String temptext = weatherdata.getString("tempdata", "26") + "°";
-        temp.setText(temptext);
-        TextPaint paint = temp.getPaint();
-        float width = paint.measureText(temptext);
-
-        Shader textShader = new LinearGradient(10, 10, width, temp.getTextSize(),
+            Shader textShader = new LinearGradient(10, 10, width, temp.getTextSize(),
                 new int[]{
                         Color.parseColor(coloruse),
-                        Color.parseColor("#8EC1DD"),
+                        Color.parseColor("#ffffff"),
                 }, null, Shader.TileMode.CLAMP);
-        temp.getPaint().setShader(textShader);
-        temp.setTextColor(Color.parseColor(coloruse));
+            temp.getPaint().setShader(textShader);
+            temp.setTextColor(Color.parseColor(coloruse));
 
-        city.setText(weatherdata.getString("citydata", "Bac Ninh"));
-
-
-
-        //Set image cache
-        switch(weatherdata.getString("statedata", "clear").toLowerCase()) {
-            case "clouds":
-                weather.setImageResource(R.drawable.clouds);
-                coloruse = "#8EC1DD";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            case "atmosphere":
-                weather.setImageResource(R.drawable.atmosphere);
-                coloruse = "#27B1FF";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            case "snow":
-                weather.setImageResource(R.drawable.snow);
-                coloruse = "#8EC1DD";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            case "rain":
-                weather.setImageResource(R.drawable.rain);
-                coloruse = "#4E8DB1";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            case "drizzle":
-                weather.setImageResource(R.drawable.rain);
-                coloruse = "#4E8DB1";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            case "thunderstorm":
-                weather.setImageResource(R.drawable.thunderstorm);
-                coloruse = "#BF8EDD";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-            default:
-                weather.setImageResource(R.drawable.clear);
-                coloruse = "#FF8E27";
-                state.setTextColor(Color.parseColor(coloruse));
-                break;
-        }
+            city.setText(weatherdata.getString("citydata", "Bac Ninh"));
 
 
 
+        new Thread(() -> {
+            if (checkPermission()) {
+                getLocation();
+            }
+        }).start();
 
-
-
-
-        if (checkPermission()) {
-            getLocation();
-        }
     }
 
 
@@ -150,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show());
+        }, error -> Toast.makeText(MainActivity.this, "Lỗi mạng", Toast.LENGTH_SHORT).show());
 
         requestQueue.add(JsonArrayRequest);
     }
@@ -169,10 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
                 String checkstate = response.getJSONArray("weather").getJSONObject(0).getString("main");
                 String coloruse;
+                weatherblur.setImageResource(R.drawable.clearblur);
                 switch(checkstate.toLowerCase()) {
                     case "clouds":
                         weather.setImageResource(R.drawable.clouds);
@@ -235,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-        }, error -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show());
+        }, error -> Toast.makeText(MainActivity.this, "Lỗi mạng", Toast.LENGTH_SHORT).show());
 
         requestQueue.add(JsonObjectRequest);
     }

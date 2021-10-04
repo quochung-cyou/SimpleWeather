@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
 
@@ -16,9 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
-            android:fontFamily="@font/manropemedium"
+            android:fontFamily="@font/manropebold"
             android:text="September 10, 2021"
-            android:textSize="15dp"></TextView>
+            android:textSize="18dp"></TextView>
 
         <TextView
             android:id="@+id/city"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/manropeextrabold"
+            android:fontFamily="@font/manropebold"
             android:text="Bac Ninh"
             android:textColor="@color/black"
             android:textSize="35dp"
@@ -50,8 +51,8 @@
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:adjustViewBounds="true"
-
-                android:src="@drawable/clear"></ImageView>
+                android:src="@drawable/clear"
+                ></ImageView>
 
             <ImageView
                 android:id="@+id/weatherblur"
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:fontFamily="@font/manropeextrabold"
+            android:fontFamily="@font/manropebold"
             android:text="26°"
             android:textSize="85dp"></TextView>
 
@@ -77,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/manropesemibold"
+            android:fontFamily="@font/manroperegular"
             android:text="Clear"
             android:textColor="@color/black"
             android:textSize="18dp"
