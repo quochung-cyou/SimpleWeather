@@ -1,11 +1,11 @@
 # Simple Weather
 ## Author
 
-* quochungvn
+* quochungcyou
 
 ## Description
 
-A simple weather app with minimal design 
+Presents SimpleWeather, a modern and minimal weather app that makes it easy for users to keep track of the weather. It has a beautiful design with a fast loading speed, allowing users to quickly access the latest weather information. The app also uses OpenWeatherMap API to provide accurate and up-to-date weather data. With its simple yet modern design, SimpleWeather is perfect for anyone looking for an easy way to view the current and forecasted weather conditions.
 
 ### Prerequisites
 
